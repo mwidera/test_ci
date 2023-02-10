@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    env:
+      FOO: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Fake error
+        run: exit -1
+      - name: Run based on env      
+        if: ${{ env.FOO }}
+        run: echo Hello, world!
+
+      - name: Run based on env and always
+        if: ${{ always() && env.FOO }}
+        run: echo Hello, world!
+      
